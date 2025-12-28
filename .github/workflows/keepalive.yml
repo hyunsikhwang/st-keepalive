@@ -32,10 +32,10 @@ jobs:
       - name: Run script
         run: python visit_app.py
 
-      # --- [추가된 기능] 60일 자동 비활성화 방지 ---
-#      - name: Keep Workflow Alive
-#        uses: gautamkrishnar/keepalive-workflow@v1
-#        with:
-#          # 마지막 커밋으로부터 50일이 지났는지 체크하여,
-#          # 지났다면 자동으로 빈 커밋을 생성해 활동 상태를 갱신합니다.
-#          time_elapsed: 50
+# --- [수정된 부분] 60일 자동 비활성화 방지 (PAT 사용) ---
+      - name: Keep Workflow Alive
+        uses: gautamkrishnar/keepalive-workflow@v1
+        with:
+          # 기본 토큰 대신 우리가 만든 강력한 토큰(MY_PAT)을 사용합니다.
+          gh_token: ${{ secrets.MY_PAT }}
+          time_elapsed: 50
