@@ -5,16 +5,17 @@ on:
     - cron: '0 */2 * * *' # 2시간마다 실행
   workflow_dispatch:
 
-# 중요: 저장소에 자동 커밋을 남기기 위해 '쓰기 권한' 부여
-permissions:
-  contents: write
-
 jobs:
   run_playwright:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          # [중요] 여기서 MY_PAT를 사용해야 이후 푸시(Push) 권한이 생깁니다.
+          token: ${{ secrets.MY_PAT }}
+          # 날짜 계산을 위해 커밋 기록(History)을 모두 가져옵니다.
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -32,10 +33,31 @@ jobs:
       - name: Run script
         run: python visit_app.py
 
-# --- [수정된 부분] 60일 자동 비활성화 방지 (PAT 사용) ---
-      - name: Keep Workflow Alive
-        uses: gautamkrishnar/keepalive-workflow@v1
-        with:
-          # 기본 토큰 대신 우리가 만든 강력한 토큰(MY_PAT)을 사용합니다.
-          gh_token: ${{ secrets.MY_PAT }}
-          time_elapsed: 50
+      # --- [수정된 부분] 외부 Action 대신 직접 구현한 비활성화 방지 로직 ---
+      - name: Auto Commit if needed
+        run: |
+          # 1. 깃 설정 (가상 유저 정보)
+          git config user.name "GitHub Action Bot"
+          git config user.email "action@github.com"
+
+          # 2. 마지막 커밋 날짜 확인
+          last_commit_unix=$(git log -1 --format=%ct)
+          current_unix=$(date +%s)
+          seconds_diff=$((current_unix - last_commit_unix))
+          days_diff=$((seconds_diff / 86400))
+
+          echo "📅 마지막 커밋으로부터 ${days_diff}일이 지났습니다."
+
+          # 3. 50일이 지났다면 빈 커밋 생성 후 푸시
+          if [ $days_diff -gt 50 ]; then
+            echo "⚠️ 50일 제한에 근접했습니다. 자동 커밋을 생성합니다..."
+            
+            # 빈 커밋 생성 (--allow-empty 옵션 사용)
+            git commit --allow-empty -m "Keep alive: Automated activity check"
+            
+            # 변경사항 푸시
+            git push
+            echo "✅ 푸시 완료! 워크플로우 수명이 연장되었습니다."
+          else
+            echo "✅ 아직 커밋할 필요가 없습니다. (50일 미만)"
+          fi
