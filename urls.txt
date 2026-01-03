@@ -3,6 +3,7 @@ https://yt-shot.streamlit.app/
 https://yt-thumb.streamlit.app/
 https://rakeup.streamlit.app/
 https://kofiabond.streamlit.app/
+https://tg-shot.streamlit.app/
 
 # 나중에 추가할 사이트가 있으면 이 아래에 적으세요
 # https://new-app.streamlit.app/
