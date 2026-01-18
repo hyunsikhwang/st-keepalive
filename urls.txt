@@ -8,6 +8,7 @@ https://krx-market.streamlit.app/
 https://search-dart.streamlit.app/
 https://reinscompare.streamlit.app/
 https://kics-fisis.streamlit.app/
+https://globalmarketpulse.streamlit.app/
 
 # 나중에 추가할 사이트가 있으면 이 아래에 적으세요
 # https://new-app.streamlit.app/
