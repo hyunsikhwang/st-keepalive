@@ -17,6 +17,7 @@ https://realmon.streamlit.app/
 https://cancertrend.streamlit.app/
 https://kistock.streamlit.app/
 https://x-shot.streamlit.app/
+https://pdfind.streamlit.app/
 
 # 나중에 추가할 사이트가 있으면 이 아래에 적으세요
 # https://new-app.streamlit.app/
