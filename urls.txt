@@ -1,7 +1,7 @@
 https://naverblog.streamlit.app/
 https://yt-shot.streamlit.app/
 https://yt-thumb.streamlit.app/
-https://rakeup.streamlit.app/
+https://datacrawling.streamlit.app/
 https://kofiabond.streamlit.app/
 https://tg-shot.streamlit.app/
 https://krx-market.streamlit.app/
